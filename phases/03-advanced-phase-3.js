@@ -127,3 +127,83 @@ const maxSubarr = arr => {
 
 console.log(maxSubarr([1,3,2,2,5,2,3,7]));  // => 5 because the longest subarray is [3,2,2,2,3]
 console.log(maxSubarr([1,1,1,1,3]));     // => 4 because the longest subarray is [1,1,1,1]
+
+
+//Coin Change
+const coinChange = (array, num) => {
+  if (num === 0) return 0;
+  let totalCoins = 0;
+  const coinCount = {};
+  let allDenoLarge = true;
+  for (const coin of array) {
+    if (coin <= num) {
+      allDenoLarge = false;
+      coinCount[coin] = 0;
+    }
+  }
+  if (allDenoLarge) return -1;
+  while(Object.keys(coinCount).length !== 0) {
+    const largestDeno = Math.max(...Object.keys(coinCount));
+    if (num - largestDeno < 0) {
+      totalCoins += coinCount[largestDeno];
+      delete coinCount[largestDeno];
+    } else {
+      coinCount[largestDeno] += 1;
+      num = num - largestDeno;
+    }
+  }
+  return totalCoins;
+}
+//Time: O(N)
+//Space: O(N)
+
+const coins = [1, 5, 10, 25];
+const coins2 = [5];
+console.log(coinChange(coins, 11));      // => 2, 10 + 1 = 11
+console.log(coinChange(coins2, 3));      // => -1
+console.log(coinChange(coins2, 0));      // => 0)
+
+
+//Climbing Steps
+const climbingSteps = steps => {
+  const stepsCombo = {};
+  stepsCombo[0] = 1;
+  stepsCombo[1] = 1;
+  stepsCombo[2] = 2;
+  let i = 3;
+  while (i <= steps) {
+    stepsCombo[i] = stepsCombo[i - 1] + stepsCombo[i - 2] + stepsCombo[i - 3]
+    i++;
+  }
+  return stepsCombo[steps];
+}
+
+// There is 1 way to climb zero steps:
+//   1. 0 steps
+console.log(climbingSteps(0));  // 1
+
+// There is 1 ways to climb one step:
+//   1. 1 step
+console.log(climbingSteps(1));  // 1
+
+// There are 2 ways to climb two steps:
+//   1. 1 step + 1 step
+//   2. 2 steps
+console.log(climbingSteps(2));  // 2
+
+// There are 4 ways to climb three steps:
+//   1. 1 step + 1 step + 1 step
+//   2. 1 step + 2 steps
+//   3. 2 steps + 1 step
+//   4. 3 steps
+console.log(climbingSteps(3));  // 4
+
+// There are 7 ways to climb four steps:
+//   1. 1 step + 1 step + 1 step + 1 step
+//   2. 1 step + 1 step + 2 steps
+//   3. 1 step + 2 steps + 1 step
+//   4. 2 steps + 1 step + 1 step
+//   5. 1 step + 3 steps
+//   6. 3 steps + 1 steps
+//   7. 2 steps + 2 steps
+console.log(climbingSteps(4));  // 7
